@@ -4,7 +4,7 @@
  * Created Date: 2024-03-08 12:34:48
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-08 14:30:50
+ * Last Modified: 2024-07-12 22:15:20
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -22,6 +22,7 @@
 #include "services/gap/ble_svc_gap.h"
 #include "./bleprph.h"
 #include "nvs_flash.h"
+#include "esp_bt.h"
 
 static const char *tag = "NimBLE_BLE_PRPH";
 static int bleprph_gap_event(struct ble_gap_event *event, void *arg);
@@ -95,7 +96,8 @@ static void bleprph_advertise(void)
      * special value BLE_HS_ADV_TX_PWR_LVL_AUTO.
      */
     fields.tx_pwr_lvl_is_present = 1;
-    fields.tx_pwr_lvl = BLE_HS_ADV_TX_PWR_LVL_AUTO;
+    // fields.tx_pwr_lvl = BLE_HS_ADV_TX_PWR_LVL_AUTO;
+    fields.tx_pwr_lvl = 9;
 
     name = ble_svc_gap_device_name();
     fields.name = (uint8_t *)name;
@@ -167,7 +169,7 @@ static int bleprph_gap_event(struct ble_gap_event *event, void *arg)
         {
             rc = ble_gap_conn_find(event->connect.conn_handle, &desc);
             assert(rc == 0);
-            // bleprph_print_conn_desc(&desc);
+            bleprph_print_conn_desc(&desc);
         }
         MODLOG_DFLT(INFO, "\n");
 
@@ -180,7 +182,7 @@ static int bleprph_gap_event(struct ble_gap_event *event, void *arg)
 
     case BLE_GAP_EVENT_DISCONNECT:
         MODLOG_DFLT(INFO, "disconnect; reason=%d ", event->disconnect.reason);
-        // bleprph_print_conn_desc(&event->disconnect.conn);
+        bleprph_print_conn_desc(&event->disconnect.conn);
         MODLOG_DFLT(INFO, "\n");
 
         /* Connection terminated; resume advertising. */
@@ -193,7 +195,7 @@ static int bleprph_gap_event(struct ble_gap_event *event, void *arg)
                     event->conn_update.status);
         rc = ble_gap_conn_find(event->conn_update.conn_handle, &desc);
         assert(rc == 0);
-        // bleprph_print_conn_desc(&desc);
+        bleprph_print_conn_desc(&desc);
         MODLOG_DFLT(INFO, "\n");
         return 0;
 
@@ -209,7 +211,7 @@ static int bleprph_gap_event(struct ble_gap_event *event, void *arg)
                     event->enc_change.status);
         rc = ble_gap_conn_find(event->enc_change.conn_handle, &desc);
         assert(rc == 0);
-        // bleprph_print_conn_desc(&desc);
+        bleprph_print_conn_desc(&desc);
         MODLOG_DFLT(INFO, "\n");
         return 0;
 
@@ -375,6 +377,8 @@ void Bleprph_Init()
     }
     ESP_ERROR_CHECK(ret);
 
+    esp_ble_tx_power_set(ESP_BLE_PWR_TYPE_DEFAULT, ESP_PWR_LVL_P9);
+    
     ret = nimble_port_init();
     if (ret != ESP_OK)
     {
@@ -394,7 +398,8 @@ void Bleprph_Init()
     assert(rc == 0);
 
     /* Set the default device name. */
-    rc = ble_svc_gap_device_name_set("nimble-bleprph");
+    // rc = ble_svc_gap_device_name_set("3-DIM-Motion-Platform");
+    rc = ble_svc_gap_device_name_set("bleprph");
     assert(rc == 0);
 
     /* XXX Need to have template for store */
