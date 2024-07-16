@@ -4,7 +4,7 @@
  * Created Date: 2024-07-07 17:42:44
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-10 22:16:07
+ * Last Modified: 2024-07-16 21:01:34
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -33,7 +33,7 @@ public:
     LinearSlider xSlider;
     LinearSlider ySlider;
     MG995 penServo;
-    float penDownAngle = 97;
+    float penDownAngle = 95;
     float penUpAngle = 91;
     bool isPenDown = false;
     CommandManager commandManager;

@@ -61,12 +61,12 @@ void convertBletoPID()
     WriterBotInstance->ySlider.motor.pid.outputLimit = gatt_remoteControll_chr_PID_val[9];
 
     printf("[BLE]received PID config of X -> Kp: %f, Ki: %f, Kd: %f, integralLimit: %f, outputLimit: %f\n",
-            gatt_remoteControll_chr_PID_val[0], gatt_remoteControll_chr_PID_val[1], gatt_remoteControll_chr_PID_val[2],
-            gatt_remoteControll_chr_PID_val[3], gatt_remoteControll_chr_PID_val[4]);
+           gatt_remoteControll_chr_PID_val[0], gatt_remoteControll_chr_PID_val[1], gatt_remoteControll_chr_PID_val[2],
+           gatt_remoteControll_chr_PID_val[3], gatt_remoteControll_chr_PID_val[4]);
 
     printf("[BLE]received PID config of Y -> Kp: %f, Ki: %f, Kd: %f, integralLimit: %f, outputLimit: %f\n",
-            gatt_remoteControll_chr_PID_val[5], gatt_remoteControll_chr_PID_val[6], gatt_remoteControll_chr_PID_val[7],
-            gatt_remoteControll_chr_PID_val[8], gatt_remoteControll_chr_PID_val[9]);
+           gatt_remoteControll_chr_PID_val[5], gatt_remoteControll_chr_PID_val[6], gatt_remoteControll_chr_PID_val[7],
+           gatt_remoteControll_chr_PID_val[8], gatt_remoteControll_chr_PID_val[9]);
 }
 
 // 读写回调函数
@@ -103,6 +103,17 @@ static int gatt_remoteControll_svc_access(uint16_t conn_handle, uint16_t attr_ha
 
     // 写操作 Write ctxt->om to the value if the operation is WRITE
     case BLE_GATT_ACCESS_OP_WRITE_CHR:
+        // if (conn_handle != BLE_HS_CONN_HANDLE_NONE)
+        // {
+        //     MODLOG_DFLT(INFO, "Characteristic write; conn_handle=%d attr_handle=%d",
+        //                 conn_handle, attr_handle);
+        // }
+        // else
+        // {
+        //     MODLOG_DFLT(INFO, "Characteristic write by NimBLE stack; attr_handle=%d",
+        //                 attr_handle);
+        // }
+
         if (attr_handle == gatt_remoteControll_chr_PID_val_handle)
         {
             rc = gatt_svr_write(ctxt->om,
@@ -120,13 +131,14 @@ static int gatt_remoteControll_svc_access(uint16_t conn_handle, uint16_t attr_ha
         }
         else if (attr_handle == gatt_remoteControll_chr_task_batch_val_handle)
         {
-            uint8_t data[16 * 16]; // 每条任务16字节，共16条任务
+            const int BATCH_SIZE = 8; // 每一个batch共BATCH_SIZE条任务
+            uint8_t data[16 * BATCH_SIZE]; // 每条任务16字节，共BATCH_SIZE条任务
             rc = gatt_svr_write(ctxt->om,
                                 sizeof(data),
                                 sizeof(data),
                                 data, NULL);
             // 处理任务batch
-            WriterBotInstance->commandManager.sendBatchToQueue(data, 16);
+            WriterBotInstance->commandManager.sendBatchToQueue(data, BATCH_SIZE);
         }
         else if (attr_handle == gatt_remoteControll_chr_pen_val_handle)
         {

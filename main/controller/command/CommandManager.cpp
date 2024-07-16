@@ -4,11 +4,11 @@
  * Created Date: 2024-07-08 19:23:46
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-08 23:26:51
+ * Last Modified: 2024-07-16 18:27:27
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
- * 
+ *
  * ------------------------------------
  */
 
@@ -16,7 +16,8 @@
 
 CommandManager::CommandManager()
 {
-    taskQueueHandle = xQueueCreate(64, 16); // create a queue with 64 slots and each slot can hold 16 bytes of command data
+    // create a queue with 64 slots and each slot can hold 16 bytes of command data
+    taskQueueHandle = xQueueCreate(64, this->bytesPerCommand);
 }
 
 void CommandManager::sendBatchToQueue(void *commandBatch, uint32_t commandCount)
