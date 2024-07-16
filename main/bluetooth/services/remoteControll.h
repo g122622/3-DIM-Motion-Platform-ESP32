@@ -46,7 +46,7 @@ void convertPIDtoBle()
     gatt_remoteControll_chr_PID_val[9] = WriterBotInstance->ySlider.motor.pid.outputLimit;
 }
 
-void convertBletoPID()
+void    convertBletoPID()
 {
     WriterBotInstance->xSlider.motor.pid.Kp = gatt_remoteControll_chr_PID_val[0];
     WriterBotInstance->xSlider.motor.pid.Ki = gatt_remoteControll_chr_PID_val[1];

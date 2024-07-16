@@ -4,7 +4,7 @@
  * Created Date: 2024-07-07 17:42:55
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-10 22:35:38
+ * Last Modified: 2024-07-16 23:19:43
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -51,10 +51,6 @@ void commandTask(void *pvParameters)
             break;
         case 0x01: // M01 move with pen down, linear
             WriterBotInstance->dropPen();
-            if (lastOpcode != 0x01) // to avoid unnecessary delay
-            {
-                delay(500);
-            }
             WriterBotInstance->moveToPosition(data[0], data[1]);
             break;
         case 0x04: // M04 delay for dt seconds
