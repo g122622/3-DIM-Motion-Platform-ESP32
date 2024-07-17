@@ -4,7 +4,7 @@
  * Created Date: 2024-07-08 19:23:46
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-16 18:27:27
+ * Last Modified: 2024-07-17 14:25:36
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -16,7 +16,7 @@
 
 CommandManager::CommandManager()
 {
-    // create a queue with 64 slots and each slot can hold 16 bytes of command data
+    // create a queue with 64 slots and each slot can hold bytesPerCommand bytes of command data
     taskQueueHandle = xQueueCreate(64, this->bytesPerCommand);
 }
 

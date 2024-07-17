@@ -4,7 +4,7 @@
  * Created Date: 2024-07-07 17:42:55
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-16 23:19:43
+ * Last Modified: 2024-07-17 14:24:21
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -17,7 +17,7 @@
 void commandTask(void *pvParameters)
 {
     WriterBot *WriterBotInstance = (WriterBot *)pvParameters;
-    const int dt = 300;        // delay between different commands in milliseconds
+    const int dt = 100;        // delay between different commands in milliseconds
     uint8_t lastOpcode = 0xff; // last executed command opcode, initialize to invalid value
 
     while (1)
@@ -32,15 +32,14 @@ void commandTask(void *pvParameters)
         uint8_t opcode = static_cast<uint8_t>(command[0]);
         uint16_t number = static_cast<uint16_t>(command[2] << 8 | command[1]); // little-endian
         // uint8_t reserved = static_cast<uint8_t>(command[3]);
-        float data[3];
+        float data[2];
         data[0] = *reinterpret_cast<float *>(&command[4]);
         data[1] = *reinterpret_cast<float *>(&command[8]);
-        data[2] = *reinterpret_cast<float *>(&command[12]);
 
         // update current command number
         WriterBotInstance->commandManager.currentCommandNumber = number;
 
-        printf("received command, opcode: %d , number: %d , data: %f, %f, %f\n", opcode, number, data[0], data[1], data[2]);
+        printf("received command, opcode: %d , number: %d , data: %f, %f, %f\n", opcode, number, data[0], data[1]);
         // execute command
         switch (opcode)
         {

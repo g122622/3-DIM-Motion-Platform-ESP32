@@ -4,7 +4,7 @@
  * Created Date: 2024-06-29 10:31:46
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-11 21:17:59
+ * Last Modified: 2024-07-17 13:42:47
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -89,6 +89,7 @@ float PIDController::update(float currentValueIn, float dt)
 
 void PIDController::setTarget(float targetValueIn)
 {
+    // Check if the target value has changed significantly.
     if (MathHelper.abs(targetValueIn - targetValue) > 0.01)
     {
         this->reset();

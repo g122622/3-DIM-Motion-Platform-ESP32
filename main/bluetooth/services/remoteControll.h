@@ -46,7 +46,7 @@ void convertPIDtoBle()
     gatt_remoteControll_chr_PID_val[9] = WriterBotInstance->ySlider.motor.pid.outputLimit;
 }
 
-void    convertBletoPID()
+void convertBletoPID()
 {
     WriterBotInstance->xSlider.motor.pid.Kp = gatt_remoteControll_chr_PID_val[0];
     WriterBotInstance->xSlider.motor.pid.Ki = gatt_remoteControll_chr_PID_val[1];
@@ -131,8 +131,8 @@ static int gatt_remoteControll_svc_access(uint16_t conn_handle, uint16_t attr_ha
         }
         else if (attr_handle == gatt_remoteControll_chr_task_batch_val_handle)
         {
-            const int BATCH_SIZE = 8; // 每一个batch共BATCH_SIZE条任务
-            uint8_t data[16 * BATCH_SIZE]; // 每条任务16字节，共BATCH_SIZE条任务
+            const int BATCH_SIZE = 16;      // 每一个batch共BATCH_SIZE条任务
+            uint8_t data[12 * BATCH_SIZE]; // 每条任务12字节，共BATCH_SIZE条任务
             rc = gatt_svr_write(ctxt->om,
                                 sizeof(data),
                                 sizeof(data),
