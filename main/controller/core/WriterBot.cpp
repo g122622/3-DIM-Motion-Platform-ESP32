@@ -4,7 +4,7 @@
  * Created Date: 2024-07-07 17:42:55
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-17 14:24:21
+ * Last Modified: 2024-07-18 00:11:44
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -13,12 +13,14 @@
  */
 
 #include "./WriterBot.h"
+#include "utils/math/MathHelper.h"
 
 void commandTask(void *pvParameters)
 {
     WriterBot *WriterBotInstance = (WriterBot *)pvParameters;
-    const int dt = 100;        // delay between different commands in milliseconds
-    uint8_t lastOpcode = 0xff; // last executed command opcode, initialize to invalid value
+    int dt = 0;                 // delay between different commands in milliseconds
+    uint8_t lastOpcode = 0xff;  // last executed command opcode, initialize to invalid value
+    float lastData[2] = {0, 0}; // last executed command data, initialize to 0
 
     while (1)
     {
@@ -39,7 +41,7 @@ void commandTask(void *pvParameters)
         // update current command number
         WriterBotInstance->commandManager.currentCommandNumber = number;
 
-        printf("received command, opcode: %d , number: %d , data: %f, %f, %f\n", opcode, number, data[0], data[1]);
+        printf("received command, opcode: %d , number: %d , data: %f, %f\n", opcode, number, data[0], data[1]);
         // execute command
         switch (opcode)
         {
@@ -52,10 +54,13 @@ void commandTask(void *pvParameters)
             WriterBotInstance->dropPen();
             WriterBotInstance->moveToPosition(data[0], data[1]);
             break;
+        case 0x03: // M03 drop the pen
+            WriterBotInstance->dropPen();
+            break;
         case 0x04: // M04 delay for dt seconds
             delay(static_cast<uint32_t>(data[0] * 1000));
             break;
-        case 0x05: // G05 pause
+        case 0x05: // G05 lift the pen
             WriterBotInstance->liftPen();
             break;
         default:
@@ -63,16 +68,30 @@ void commandTask(void *pvParameters)
             break;
         }
 
+        // calculate the delay between different commands,
+        // based on the distance between the current and last command
+        if ((opcode == 0x00 && lastOpcode == 0x00) || (opcode == 0x01 && lastOpcode == 0x01))
+        {
+            float distance = MathHelper.distance(lastData[0], lastData[1], data[0], data[1]);
+            dt = static_cast<int>(50 + distance * 100);
+        }
+        else
+        {
+            dt = 50;
+        }
+        // delay for dt milliseconds, then execute the next command
+        delay(dt);
+
         // update executed command count
         WriterBotInstance->commandManager.executedCommandCount++;
         // update last opcode
         lastOpcode = opcode;
+        // update last data
+        lastData[0] = data[0];
+        lastData[1] = data[1];
 
         // free memory, very important!
         vPortFree(command);
-
-        // delay for dt milliseconds, then execute the next command
-        delay(dt);
     }
 }
 

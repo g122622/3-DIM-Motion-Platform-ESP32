@@ -4,7 +4,7 @@
  * Created Date: 2024-06-29 10:45:31
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-01 00:12:50
+ * Last Modified: 2024-07-18 00:04:41
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -13,6 +13,7 @@
  */
 
 #include "./MathHelper.h"
+#include <cmath>
 
 // template <typename T>
 // T MathHelper_Impl::min(T a, T b)
@@ -62,3 +63,6 @@ float MathHelper_Impl::abs(float value)
     return value < 0 ? -value : value;
 }
 
+float MathHelper_Impl::distance(float x1, float y1, float x2, float y2){
+    return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
+}

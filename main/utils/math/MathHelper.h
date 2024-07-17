@@ -4,7 +4,7 @@
  * Created Date: 2024-06-29 10:43:22
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-01 00:13:02
+ * Last Modified: 2024-07-18 00:04:06
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -34,6 +34,7 @@ public:
     static float max(float a, float b);
     static float limit(float value, float range);
     static float abs(float value);
+    static float distance(float x1, float y1, float x2, float y2);
 };
 
 inline MathHelper_Impl MathHelper;
