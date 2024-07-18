@@ -18,7 +18,7 @@ void app_main(void)
 {
     Logger.info("进入app_main函数，初始化蓝牙协议栈\n");
     Bleprph_Init();
-    delay(3000);
+    delay(1000);
 
     // int count = 90;
     // DCSteppingMotor motor(27, 26, 25, 16, 17);

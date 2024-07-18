@@ -4,7 +4,7 @@
  * Created Date: 2024-07-07 17:42:55
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-18 00:11:44
+ * Last Modified: 2024-07-18 13:12:55
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -18,7 +18,7 @@
 void commandTask(void *pvParameters)
 {
     WriterBot *WriterBotInstance = (WriterBot *)pvParameters;
-    int dt = 0;                 // delay between different commands in milliseconds
+    uint32_t dt = 0;            // delay between different commands in milliseconds
     uint8_t lastOpcode = 0xff;  // last executed command opcode, initialize to invalid value
     float lastData[2] = {0, 0}; // last executed command data, initialize to 0
 
@@ -29,8 +29,8 @@ void commandTask(void *pvParameters)
 
         // parse commands
         // the structure of a command is as follows:
-        // [opcode * 1 byte][number * 2 bytes][reserved * 1 bytes][data * 12 bytes], 16 bytes in total.
-        // the data is 3 float numbers in little-endian format
+        // [opcode * 1 byte][number * 2 bytes][reserved * 1 bytes][data * 8 bytes], 12 bytes in total.
+        // the data is 2 float numbers in little-endian format
         uint8_t opcode = static_cast<uint8_t>(command[0]);
         uint16_t number = static_cast<uint16_t>(command[2] << 8 | command[1]); // little-endian
         // uint8_t reserved = static_cast<uint8_t>(command[3]);
@@ -72,12 +72,13 @@ void commandTask(void *pvParameters)
         // based on the distance between the current and last command
         if ((opcode == 0x00 && lastOpcode == 0x00) || (opcode == 0x01 && lastOpcode == 0x01))
         {
-            float distance = MathHelper.distance(lastData[0], lastData[1], data[0], data[1]);
-            dt = static_cast<int>(50 + distance * 100);
+            float distance = MathHelper.max(
+                MathHelper.abs(data[0] - lastData[0]), MathHelper.abs(data[1] - lastData[1]));
+            dt = static_cast<uint32_t>(100 + distance * 150);
         }
         else
         {
-            dt = 50;
+            dt = 100;
         }
         // delay for dt milliseconds, then execute the next command
         delay(dt);

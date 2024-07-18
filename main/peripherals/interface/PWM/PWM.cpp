@@ -4,7 +4,7 @@
  * Created Date: 2024-06-29 11:21:01
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-08 01:05:09
+ * Last Modified: 2024-07-18 13:15:06
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -88,6 +88,9 @@ void PWM::setDuty(float percentage)
     this->duty = duty;
 }
 
+/**
+ * warning: this function is not implemented yet
+ */
 void PWM::setFrequency(uint32_t freq)
 {
     return; // TODO: implement this
