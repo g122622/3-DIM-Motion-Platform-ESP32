@@ -4,7 +4,7 @@
  * Created Date: 2024-07-07 17:42:55
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-18 13:12:55
+ * Last Modified: 2024-07-22 23:45:50
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -132,8 +132,8 @@ void WriterBot::liftPen()
 
 WriterBot::~WriterBot()
 {
-    xSlider.setPosition(0);
-    ySlider.setPosition(0);
+    xSlider.reset();
+    ySlider.reset();
     liftPen();
     vTaskDelete(this->commandTaskHandle);
 }

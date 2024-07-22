@@ -4,7 +4,7 @@
  * Created Date: 2024-06-30 20:21:14
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-11 14:32:59
+ * Last Modified: 2024-07-22 23:44:47
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -29,6 +29,11 @@ void LinearSlider::step(float distance)
 // position is in mm
 void LinearSlider::setPosition(float position)
 {
+    if (position < 0)
+    {
+        position = 0;
+    }
+    
     float angle = ((position - currentPosition) / distancePerCycle) * 360;
     motor.step(angle);
     currentPosition = position;
@@ -46,4 +51,8 @@ float LinearSlider::getRealPosition()
 {
     float realAngle = motor.encoder.readAngle();
     return realAngle / 360.0f * distancePerCycle;
+}
+
+void LinearSlider::reset(){
+    motor.reset();
 }
