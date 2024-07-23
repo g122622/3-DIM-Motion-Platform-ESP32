@@ -4,7 +4,7 @@
  * Created Date: 2024-07-07 17:42:55
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-22 23:45:50
+ * Last Modified: 2024-07-23 16:49:03
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -74,11 +74,11 @@ void commandTask(void *pvParameters)
         {
             float distance = MathHelper.max(
                 MathHelper.abs(data[0] - lastData[0]), MathHelper.abs(data[1] - lastData[1]));
-            dt = static_cast<uint32_t>(100 + distance * 150);
+            dt = static_cast<uint32_t>(100 + distance * 100);
         }
         else
         {
-            dt = 100;
+            dt = 50;
         }
         // delay for dt milliseconds, then execute the next command
         delay(dt);
@@ -96,15 +96,31 @@ void commandTask(void *pvParameters)
     }
 }
 
+// void penCompensationTask(void *pvParameters)
+// {
+//     WriterBot *WriterBotInstance = (WriterBot *)pvParameters;
+//     while (1)
+//     {
+//         float realPos = WriterBotInstance->xSlider.getRealPosition();
+//         if (realPos < 100 && realPos > 40) {
+//             WriterBotInstance->penDownAngleOffset = 1;
+//         } else {
+//             WriterBotInstance->penDownAngleOffset = 0;}
+//         delay(100);
+//     }
+// }
+
 WriterBot::WriterBot(int X_in1, int X_in2, int X_pwm, int X_scl, int X_sda, int X_port,
                      int Y_in1, int Y_in2, int Y_pwm, int Y_scl, int Y_sda, int Y_port,
                      int pen_pwm)
-    : xSlider(X_in1, X_in2, X_pwm, X_scl, X_sda, X_port),
-      ySlider(Y_in1, Y_in2, Y_pwm, Y_scl, Y_sda, Y_port),
+    : xSlider(X_in1, X_in2, X_pwm, X_scl, X_sda, X_port, 140),
+      ySlider(Y_in1, Y_in2, Y_pwm, Y_scl, Y_sda, Y_port, 210),
       penServo(pen_pwm)
 {
-    xTaskCreatePinnedToCore(commandTask, "commandTaskHandle",
+    xTaskCreatePinnedToCore(commandTask, "commandTask",
                             4096 * 2, this, 3, &commandTaskHandle, 1);
+    // xTaskCreatePinnedToCore(penCompensationTask, "penCompensationTask",
+    //                         1024, this, 3, &commandTaskHandle, 1);
     this->moveToPosition(0, 0);
 }
 
@@ -120,7 +136,15 @@ void WriterBot::moveToPosition(float x, float y)
 
 void WriterBot::dropPen()
 {
-    penServo.setAngle(penDownAngle);
+    if (xSlider.getPosition() < 100 && xSlider.getPosition() > 40)
+    {
+        this->penDownAngleOffset = 1;
+    }
+    else
+    {
+        this->penDownAngleOffset = 0;
+    }
+    penServo.setAngle(penDownAngle + penDownAngleOffset);
     this->isPenDown = true;
 }
 

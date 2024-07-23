@@ -4,7 +4,7 @@
  * Created Date: 2024-07-08 19:23:53
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-17 14:24:41
+ * Last Modified: 2024-07-23 09:59:35
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -31,4 +31,3 @@ private:
     QueueHandle_t taskQueueHandle;
     int bytesPerCommand = 12;
 };
-
