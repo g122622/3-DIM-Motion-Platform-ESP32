@@ -9,6 +9,7 @@
 #include "../utils/gatt_svr_write.h"
 
 #include "global/global.h"
+#include "peripherals/device/LED/LED.h"
 
 // ===========================遥控器服务 0xffe0================================== //
 
@@ -74,6 +75,7 @@ static int gatt_remoteControll_svc_access(uint16_t conn_handle, uint16_t attr_ha
 static int gatt_remoteControll_svc_access(uint16_t conn_handle, uint16_t attr_handle, struct ble_gatt_access_ctxt *ctxt, void *arg)
 {
     int rc;
+    WriterBotInstance->bluetoothLED.blink(1, 200);
 
     switch (ctxt->op)
     {

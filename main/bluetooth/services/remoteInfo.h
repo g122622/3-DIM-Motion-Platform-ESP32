@@ -4,7 +4,7 @@
  * Created Date: 2024-03-11 22:55:56
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-11 23:20:37
+ * Last Modified: 2024-07-28 11:28:02
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -46,6 +46,7 @@ static int gatt_remoteInfo_svc_access(uint16_t conn_handle, uint16_t attr_handle
 static int gatt_remoteInfo_svc_access(uint16_t conn_handle, uint16_t attr_handle, struct ble_gatt_access_ctxt *ctxt, void *arg)
 {
     int rc;
+    WriterBotInstance->bluetoothLED.blink(1, 200);
 
     switch (ctxt->op)
     {

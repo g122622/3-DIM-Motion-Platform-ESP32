@@ -4,7 +4,7 @@
  * Created Date: 2024-06-29 17:24:35
  * Author: Guoyi
  * -----
- * Last Modified: 2024-06-29 18:48:30
+ * Last Modified: 2024-07-28 10:32:08
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -35,4 +35,9 @@ void GPIO::write(uint32_t value)
 int GPIO::read()
 {
     return gpio_get_level(static_cast<gpio_num_t>(pinNum));
+}
+
+GPIO::~GPIO()
+{
+    // do nothing
 }

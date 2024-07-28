@@ -4,7 +4,7 @@
  * Created Date: 2024-07-07 17:42:55
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-23 16:49:03
+ * Last Modified: 2024-07-28 16:22:21
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -115,13 +115,17 @@ WriterBot::WriterBot(int X_in1, int X_in2, int X_pwm, int X_scl, int X_sda, int 
                      int pen_pwm)
     : xSlider(X_in1, X_in2, X_pwm, X_scl, X_sda, X_port, 140),
       ySlider(Y_in1, Y_in2, Y_pwm, Y_scl, Y_sda, Y_port, 210),
-      penServo(pen_pwm)
+      statusLED(12),
+      bluetoothLED(23),
+      penServo(pen_pwm),
+      storage("main")
 {
     xTaskCreatePinnedToCore(commandTask, "commandTask",
                             4096 * 2, this, 3, &commandTaskHandle, 1);
     // xTaskCreatePinnedToCore(penCompensationTask, "penCompensationTask",
     //                         1024, this, 3, &commandTaskHandle, 1);
     this->moveToPosition(0, 0);
+    statusLED.on();
 }
 
 /**
@@ -160,4 +164,5 @@ WriterBot::~WriterBot()
     ySlider.reset();
     liftPen();
     vTaskDelete(this->commandTaskHandle);
+    statusLED.off();
 }

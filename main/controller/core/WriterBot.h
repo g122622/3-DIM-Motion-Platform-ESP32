@@ -4,7 +4,7 @@
  * Created Date: 2024-07-07 17:42:44
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-23 15:57:04
+ * Last Modified: 2024-07-28 16:21:36
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -18,6 +18,8 @@
 #include "peripherals/device/linearSlider/LinearSlider.h"
 #include "peripherals/device/motors/servo/MG995.h"
 #include "controller/command/CommandManager.h"
+#include "peripherals/device/LED/LED.h"
+#include "storage/NVSStorage.h"
 
 class WriterBot
 {
@@ -32,15 +34,18 @@ public:
 
     LinearSlider xSlider;
     LinearSlider ySlider;
+    CommandManager commandManager;
+    LED statusLED;
+    LED bluetoothLED;
     MG995 penServo;
     float penDownAngle = 92;
     float penDownAngleOffset = 0;
     float penUpAngle = 87;
     bool isPenDown = false;
-    CommandManager commandManager;
 
 private:
     TaskHandle_t commandTaskHandle;
+    NVSStorage storage;
 };
 
 #endif // WRITERBOT_H

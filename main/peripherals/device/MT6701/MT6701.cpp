@@ -4,7 +4,7 @@
  * Created Date: 2024-05-31 22:55:47
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-11 21:22:56
+ * Last Modified: 2024-07-28 16:54:45
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -43,6 +43,9 @@ float MT6701::readRawAngle()
     return angle;
 }
 
+/**
+ * @note concurrent read angle is not allowed, may cause heavy collision.
+ */
 float MT6701::readAngle()
 {
     const float threshold = 15.0;

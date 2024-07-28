@@ -4,7 +4,7 @@
  * Created Date: 2024-06-29 17:24:46
  * Author: Guoyi
  * -----
- * Last Modified: 2024-06-29 18:42:41
+ * Last Modified: 2024-07-28 10:31:40
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -34,6 +34,7 @@ public:
     void setMode(int mode);
     void write(uint32_t value);
     int read();
+    ~GPIO();
 
 private:
     int pinNum;

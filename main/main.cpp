@@ -51,7 +51,7 @@ void app_main(void)
     WriterBotInstance->moveToPosition(5, 5);
     delay(2000);
     WriterBotInstance->liftPen();
-    WriterBotInstance->moveToPosition(1, 1);
+    WriterBotInstance->moveToPosition(0, 0);
 
     // LinearSlider sliderX(33, 32, 25, 5, 21, 0);
     // LinearSlider sliderY(17, 18, 19, 4, 22, 1);

@@ -16,4 +16,6 @@ idf_component_register(SRCS
 "bluetooth/gatt_server.cpp"
 "global/global.cpp"
 "controller/command/CommandManager.cpp"
+"peripherals/device/LED/LED.cpp"
+"storage/NVSStorage.cpp"
                     INCLUDE_DIRS ".")
