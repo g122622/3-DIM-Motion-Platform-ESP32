@@ -4,7 +4,7 @@
  * Created Date: 2024-07-28 15:11:38
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-28 16:09:53
+ * Last Modified: 2024-07-28 18:11:45
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -55,11 +55,11 @@ uint32_t NVSStorage::getUint32(const char *key, uint32_t defaultValue)
         return result;
         break;
     case ESP_ERR_NVS_NOT_FOUND:
-        ESP_LOGW(this->tag, "Key %s not found, using default value %u", key, static_cast<unsigned int>(defaultValue));
+        ESP_LOGW(this->tag, "Key'%s' not found, using default value '%u'", key, static_cast<unsigned int>(defaultValue));
         return defaultValue;
         break;
     default:
-        ESP_LOGE(this->tag, "Error (%s) reading key %s!", esp_err_to_name(err), key);
+        ESP_LOGE(this->tag, "Error (%s) reading key '%s'!", esp_err_to_name(err), key);
         return defaultValue;
         break;
     }
@@ -70,7 +70,7 @@ void NVSStorage::setUint32(const char *key, uint32_t value)
     esp_err_t err = nvs_set_u32(nvs_handle, key, value);
     if (err != ESP_OK)
     {
-        ESP_LOGE(this->tag, "Error (%s) writing key %s!", esp_err_to_name(err), key);
+        ESP_LOGE(this->tag, "Error (%s) writing key '%s'!", esp_err_to_name(err), key);
     }
     else
     {
@@ -81,7 +81,7 @@ void NVSStorage::setUint32(const char *key, uint32_t value)
         err = nvs_commit(nvs_handle);
         if (err != ESP_OK)
         {
-            ESP_LOGE(this->tag, "Error (%s) committing key %s!", esp_err_to_name(err), key);
+            ESP_LOGE(this->tag, "Error (%s) committing key '%s'!", esp_err_to_name(err), key);
         }
     }
 }
