@@ -4,7 +4,7 @@
  * Created Date: 2024-06-29 11:20:54
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-08 01:17:28
+ * Last Modified: 2024-07-31 18:13:03
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -22,7 +22,7 @@
 class PWM
 {
 public:
-    PWM(int pin, uint32_t freq = 10000);
+    PWM(int pin, uint32_t freq = 10000, int resolutionIndex = 12);
     void setDuty(float percentage);
     void setFrequency(uint32_t freq);
 
@@ -31,6 +31,7 @@ private:
     uint32_t freq;
     uint32_t duty;
     int timer_num_this;
+    int resolutionIndex;
 };
 
 #endif // PWM_H

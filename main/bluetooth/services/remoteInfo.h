@@ -4,7 +4,7 @@
  * Created Date: 2024-03-11 22:55:56
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-28 11:28:02
+ * Last Modified: 2024-07-31 18:33:04
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -54,8 +54,8 @@ static int gatt_remoteInfo_svc_access(uint16_t conn_handle, uint16_t attr_handle
     case BLE_GATT_ACCESS_OP_READ_CHR:
         if (attr_handle == gatt_remoteInfo_chr_realtime_pos_val_handle)
         {
-            gatt_remoteInfo_chr_realtime_pos_val[0] = WriterBotInstance->xSlider.getRealPosition();
-            gatt_remoteInfo_chr_realtime_pos_val[1] = WriterBotInstance->ySlider.getRealPosition();
+            gatt_remoteInfo_chr_realtime_pos_val[0] = WriterBotInstance->xSlider.getCurrentRealPosition();
+            gatt_remoteInfo_chr_realtime_pos_val[1] = WriterBotInstance->ySlider.getCurrentRealPosition();
             gatt_remoteInfo_chr_realtime_pos_val[2] = WriterBotInstance->isPenDown;
 
             rc = os_mbuf_append(ctxt->om,

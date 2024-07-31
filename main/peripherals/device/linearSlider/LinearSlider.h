@@ -4,7 +4,7 @@
  * Created Date: 2024-06-30 20:18:54
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-22 23:44:15
+ * Last Modified: 2024-07-31 18:33:04
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -24,8 +24,8 @@ public:
     void setPosition(float position);
     void setMaxPosition(float maxPositionIn);
     void reset();
-    float getPosition();
-    float getRealPosition();
+    float getTargetPosition();
+    float getCurrentRealPosition();
     DCSteppingMotor motor;
 
 private:

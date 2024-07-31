@@ -4,7 +4,7 @@
  * Created Date: 2024-06-29 11:21:01
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-18 13:15:06
+ * Last Modified: 2024-07-31 18:24:30
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -14,7 +14,7 @@
 
 #include "./PWM.h"
 
-PWM::PWM(int pin, uint32_t freq)
+PWM::PWM(int pin, uint32_t freq, int resolutionIndex)
 {
     static int timer_num = 0; // static variable to keep track of timer number used for PWM
     Logger.info("Creating PWM object, timer_num: %d \n", timer_num);
@@ -26,14 +26,15 @@ PWM::PWM(int pin, uint32_t freq)
 
     this->pin = pin;
     this->freq = freq;
+    this->resolutionIndex = resolutionIndex;
 
     ledc_timer_config_t ledc_timer = {
-        .speed_mode = LEDC_HIGH_SPEED_MODE,                // timer mode
-        .duty_resolution = LEDC_TIMER_12_BIT,              // resolution of PWM duty
-        .timer_num = static_cast<ledc_timer_t>(timer_num), // timer index
-        .freq_hz = freq,                                   // frequency of PWM signal
-        .clk_cfg = LEDC_AUTO_CLK,                          // auto select the source clock
-        .deconfigure = false,                              // keep the timer running after initialization
+        .speed_mode = LEDC_HIGH_SPEED_MODE,                                // timer mode
+        .duty_resolution = static_cast<ledc_timer_bit_t>(resolutionIndex), // resolution of PWM duty
+        .timer_num = static_cast<ledc_timer_t>(timer_num),                 // timer index
+        .freq_hz = freq,                                                   // frequency of PWM signal
+        .clk_cfg = LEDC_AUTO_CLK,                                          // auto select the source clock
+        .deconfigure = false,                                              // keep the timer running after initialization
     };
     ledc_timer_config(&ledc_timer);
 
@@ -78,9 +79,9 @@ void PWM::setDuty(float percentage)
         percentage = 0;
 
     // Note: the number 4096 is determined by the resolution of the timer
-    // if the timer resolution is 12 bits, then 4096 = 2^12
+    // eg. if the timer resolution is 12 bits, then 4096 = 2^12
     // if you want to change the resolution, you need to also modify the calculation of duty
-    uint32_t duty = static_cast<uint32_t>(0.01f * percentage * 4096);
+    uint32_t duty = static_cast<uint32_t>(0.01f * percentage * (2 << (this->resolutionIndex - 1)));
 
     // The channel parameter is not used as an enumeration, and must be passed as an integer value.
     ledc_set_duty(LEDC_HIGH_SPEED_MODE, static_cast<ledc_channel_t>(timer_num_this), duty);

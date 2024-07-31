@@ -4,7 +4,7 @@
  * Created Date: 2024-07-07 17:42:55
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-28 16:22:21
+ * Last Modified: 2024-07-31 18:33:04
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -101,7 +101,7 @@ void commandTask(void *pvParameters)
 //     WriterBot *WriterBotInstance = (WriterBot *)pvParameters;
 //     while (1)
 //     {
-//         float realPos = WriterBotInstance->xSlider.getRealPosition();
+//         float realPos = WriterBotInstance->xSlider.getCurrentRealPosition();
 //         if (realPos < 100 && realPos > 40) {
 //             WriterBotInstance->penDownAngleOffset = 1;
 //         } else {
@@ -140,7 +140,7 @@ void WriterBot::moveToPosition(float x, float y)
 
 void WriterBot::dropPen()
 {
-    if (xSlider.getPosition() < 100 && xSlider.getPosition() > 40)
+    if (xSlider.getTargetPosition() < 100 && xSlider.getTargetPosition() > 40)
     {
         this->penDownAngleOffset = 1;
     }

@@ -4,7 +4,7 @@
  * Created Date: 2024-06-30 20:21:14
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-23 14:11:48
+ * Last Modified: 2024-07-31 18:38:55
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -37,7 +37,7 @@ void LinearSlider::setPosition(float position)
     currentPosition = position;
 }
 
-float LinearSlider::getPosition()
+float LinearSlider::getTargetPosition()
 {
     return currentPosition;
 }
@@ -45,10 +45,9 @@ float LinearSlider::getPosition()
 /**
  * @brief Get the real position of the slider, from encoder.
  */
-float LinearSlider::getRealPosition()
+float LinearSlider::getCurrentRealPosition()
 {
-    float realAngle = motor.encoder.readAngle();
-    return realAngle / 360.0f * distancePerCycle;
+    return (motor.encoder.currentAngle - motor.) / 360.0f * distancePerCycle;
 }
 
 void LinearSlider::reset()

@@ -4,7 +4,7 @@
  * Created Date: 2024-06-29 16:16:13
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-16 16:31:22
+ * Last Modified: 2024-07-31 18:18:42
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -34,7 +34,7 @@ SimpleDCMotor::SimpleDCMotor(int pin_in1_in, int pin_in2_in, int pin_pwm_in)
     : pin_in1(pin_in1_in),
       pin_in2(pin_in2_in),
       pin_pwm(pin_pwm_in),
-      pwm(pin_pwm_in, 100),
+      pwm(pin_pwm_in, 100, 12),
       gpio_in1(pin_in1_in, gpioModes::_GPIO_MODE_OUTPUT),
       gpio_in2(pin_in2_in, gpioModes::_GPIO_MODE_OUTPUT),
       speedPercentage(0)
