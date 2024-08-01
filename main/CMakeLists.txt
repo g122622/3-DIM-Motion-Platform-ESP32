@@ -18,4 +18,5 @@ idf_component_register(SRCS
 "controller/command/CommandManager.cpp"
 "peripherals/device/LED/LED.cpp"
 "storage/NVSStorage.cpp"
+"peripherals/interface/ADC/ADC.cpp"
                     INCLUDE_DIRS ".")

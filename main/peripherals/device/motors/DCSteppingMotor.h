@@ -4,7 +4,7 @@
  * Created Date: 2024-06-29 17:50:09
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-11 14:31:06
+ * Last Modified: 2024-07-31 20:46:14
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -35,10 +35,10 @@ public:
     SimpleDCMotor motor;
     MT6701 encoder;
     PIDController pid;
+    float initialAngle;
 
 private:
-
-    float angle, initialAngle;
+    float angle;
     TaskHandle_t pidTaskHandle;
 
     // declare pidTask as friend function to access private data members

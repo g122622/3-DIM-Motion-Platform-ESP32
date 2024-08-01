@@ -4,7 +4,7 @@
  * Created Date: 2024-07-07 17:42:55
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-31 18:33:04
+ * Last Modified: 2024-08-01 11:18:38
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -118,6 +118,7 @@ WriterBot::WriterBot(int X_in1, int X_in2, int X_pwm, int X_scl, int X_sda, int 
       statusLED(12),
       bluetoothLED(23),
       penServo(pen_pwm),
+      powerADC(35, 11.0),
       storage("main")
 {
     xTaskCreatePinnedToCore(commandTask, "commandTask",

@@ -4,7 +4,7 @@
  * Created Date: 2024-07-07 17:42:44
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-28 16:21:36
+ * Last Modified: 2024-08-01 11:15:39
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -20,6 +20,7 @@
 #include "controller/command/CommandManager.h"
 #include "peripherals/device/LED/LED.h"
 #include "storage/NVSStorage.h"
+#include "peripherals/interface/ADC/ADC.h"
 
 class WriterBot
 {
@@ -38,6 +39,7 @@ public:
     LED statusLED;
     LED bluetoothLED;
     MG995 penServo;
+    ADC powerADC;
     float penDownAngle = 92;
     float penDownAngleOffset = 0;
     float penUpAngle = 87;

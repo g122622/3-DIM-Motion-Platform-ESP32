@@ -4,7 +4,7 @@
  * Created Date: 2024-03-11 22:55:56
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-31 18:33:04
+ * Last Modified: 2024-08-01 11:20:31
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -65,10 +65,10 @@ static int gatt_remoteInfo_svc_access(uint16_t conn_handle, uint16_t attr_handle
         }
         else if (attr_handle == gatt_remoteInfo_chr_power_voltage_val_handle)
         {
-            uint32_t batteryVoltage = 5; // TODO 读取真实的电池电压
+            float voltage = WriterBotInstance->powerADC.readVoltage();
             rc = os_mbuf_append(ctxt->om,
-                                &batteryVoltage,
-                                sizeof(batteryVoltage));
+                                &voltage,
+                                sizeof(voltage));
             return rc == 0 ? 0 : BLE_ATT_ERR_INSUFFICIENT_RES;
         }
         else if (attr_handle == gatt_remoteInfo_chr_cmd_number_val_handle)
