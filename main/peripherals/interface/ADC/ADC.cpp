@@ -4,7 +4,7 @@
  * Created Date: 2024-07-31 20:47:35
  * Author: Guoyi
  * -----
- * Last Modified: 2024-08-01 11:22:18
+ * Last Modified: 2024-08-02 23:11:00
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -156,7 +156,7 @@ float ADC::readVoltage()
     int adc_raw;
     int voltageInt;
 
-    if (do_calibration1_chan0)
+    if (this->didCalibration)
     {
         ESP_ERROR_CHECK(adc_oneshot_read(this->adc_handle, this->ADC_CHANNEL, &adc_raw));
         ESP_ERROR_CHECK(adc_cali_raw_to_voltage(this->adc_cali_handle, adc_raw, &voltageInt));

@@ -4,7 +4,7 @@
  * Created Date: 2024-07-07 17:42:55
  * Author: Guoyi
  * -----
- * Last Modified: 2024-08-01 11:18:38
+ * Last Modified: 2024-08-04 11:23:52
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -45,22 +45,22 @@ void commandTask(void *pvParameters)
         // execute command
         switch (opcode)
         {
-        case 0x00: // M00 quick move (without dropping the pen)
+        case 0x00: // G00 quick move (without dropping the pen)
             WriterBotInstance->liftPen();
             // delay(500);
             WriterBotInstance->moveToPosition(data[0], data[1]);
             break;
-        case 0x01: // M01 move with pen down, linear
+        case 0x01: // G01 move with pen down, linear
             WriterBotInstance->dropPen();
             WriterBotInstance->moveToPosition(data[0], data[1]);
             break;
         case 0x03: // M03 drop the pen
             WriterBotInstance->dropPen();
             break;
-        case 0x04: // M04 delay for dt seconds
+        case 0x04: // G04 delay for dt seconds
             delay(static_cast<uint32_t>(data[0] * 1000));
             break;
-        case 0x05: // G05 lift the pen
+        case 0x05: // M05 lift the pen
             WriterBotInstance->liftPen();
             break;
         default:
@@ -70,15 +70,16 @@ void commandTask(void *pvParameters)
 
         // calculate the delay between different commands,
         // based on the distance between the current and last command
-        if ((opcode == 0x00 && lastOpcode == 0x00) || (opcode == 0x01 && lastOpcode == 0x01))
+        if (opcode == 0x00 || opcode == 0x01)
         {
             float distance = MathHelper.max(
-                MathHelper.abs(data[0] - lastData[0]), MathHelper.abs(data[1] - lastData[1]));
-            dt = static_cast<uint32_t>(100 + distance * 100);
+                MathHelper.abs(data[0] - lastData[0]),
+                MathHelper.abs(data[1] - lastData[1]));
+            dt = static_cast<uint32_t>(200 + distance * 75);
         }
         else
         {
-            dt = 50;
+            dt = 100;
         }
         // delay for dt milliseconds, then execute the next command
         delay(dt);
@@ -88,8 +89,11 @@ void commandTask(void *pvParameters)
         // update last opcode
         lastOpcode = opcode;
         // update last data
-        lastData[0] = data[0];
-        lastData[1] = data[1];
+        if (opcode == 0x00 || opcode == 0x01)
+        {
+            lastData[0] = data[0];
+            lastData[1] = data[1];
+        }
 
         // free memory, very important!
         vPortFree(command);
@@ -143,7 +147,7 @@ void WriterBot::dropPen()
 {
     if (xSlider.getTargetPosition() < 100 && xSlider.getTargetPosition() > 40)
     {
-        this->penDownAngleOffset = 1;
+        this->penDownAngleOffset = 0.7;
     }
     else
     {
