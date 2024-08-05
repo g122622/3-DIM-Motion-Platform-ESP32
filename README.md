@@ -3,7 +3,7 @@
 
 使用C++编写的写字机器人固件，支持蓝牙、激光测距、磁编码步进电机、G代码解析，基于ESP32芯片。
 
-# _Sample project_
+# 3-DIM-Motion-Platform-ESP32
 
 (See the README.md file in the upper level 'examples' directory for more information about examples.)
 
