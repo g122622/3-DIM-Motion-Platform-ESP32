@@ -4,7 +4,7 @@
  * Created Date: 2024-06-29 17:49:56
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-12 00:05:42
+ * Last Modified: 2024-08-12 14:16:17
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -42,8 +42,8 @@ DCSteppingMotor::DCSteppingMotor(int pin_in1_in, int pin_in2_in, int pin_pwm_in,
 
     this->pid.setOutputLimit(50);
     this->pid.setIntegralLimit(10);
-    this->pid.setDeadzoneThreshold(1);
-    
+    this->pid.setDeadzoneThreshold(3);
+
     // create pidTask
     // pass this object as parameter to pidTask
     xTaskCreatePinnedToCore(pidTask, "pidTask-DCSteppingMotor",
@@ -58,6 +58,11 @@ void DCSteppingMotor::setAngle(float angleIn)
 void DCSteppingMotor::step(float angle_step)
 {
     this->angle += angle_step;
+}
+
+float DCSteppingMotor::getInitialAngle()
+{
+    return this->initialAngle;
 }
 
 /**

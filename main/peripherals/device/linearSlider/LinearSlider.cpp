@@ -4,7 +4,7 @@
  * Created Date: 2024-06-30 20:21:14
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-31 20:46:30
+ * Last Modified: 2024-08-12 13:51:44
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -47,7 +47,7 @@ float LinearSlider::getTargetPosition()
  */
 float LinearSlider::getCurrentRealPosition()
 {
-    return (motor.encoder.currentAngle - motor.initialAngle) / 360.0f * distancePerCycle;
+    return (motor.encoder.currentAngle - motor.getInitialAngle()) / 360.0f * distancePerCycle;
 }
 
 void LinearSlider::reset()

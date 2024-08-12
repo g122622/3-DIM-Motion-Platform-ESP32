@@ -4,7 +4,7 @@
  * Created Date: 2024-06-29 10:32:20
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-11 23:10:52
+ * Last Modified: 2024-08-12 14:04:03
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -28,18 +28,19 @@ public:
     void setIntegralLimit(float limitIn);
     void reset();
     void setDeadzoneThreshold(float thresholdIn);
+    bool hasReachedTarget();
+
     float Kp, Ki, Kd;        // gains
     float outputLimit;       // output limits
     float integralLimit;     // integral limits
     float deadzoneThreshold; // deadzone threshold for angle input, if input is within this threshold, the output will be zero to avoid jerky situation
     int _id;                 // unique id
-    
+
 private:
     float prevError, currentError;   // previous error and current error
     float targetValue, currentValue; // target value and current value
-    float errorIntegral; // integral error
-
-    int tickCount; // tick count for update calculation
+    float errorIntegral;             // integral error
+    bool hasReachedTargetFlag;
 };
 
 #endif // PID_CONTROLLER_H

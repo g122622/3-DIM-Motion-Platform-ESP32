@@ -4,7 +4,7 @@
  * Created Date: 2024-06-29 17:50:09
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-31 20:46:14
+ * Last Modified: 2024-08-12 14:03:22
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -32,14 +32,16 @@ public:
     void setAngle(float angle);
     void step(float angle_step);
     void reset();
+    float getInitialAngle();
+
     SimpleDCMotor motor;
     MT6701 encoder;
     PIDController pid;
-    float initialAngle;
 
 private:
     float angle;
     TaskHandle_t pidTaskHandle;
+    float initialAngle;
 
     // declare pidTask as friend function to access private data members
     friend void pidTask(void *pvParameters);

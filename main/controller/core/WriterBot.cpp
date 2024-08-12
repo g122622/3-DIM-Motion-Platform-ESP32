@@ -4,7 +4,7 @@
  * Created Date: 2024-07-07 17:42:55
  * Author: Guoyi
  * -----
- * Last Modified: 2024-08-04 11:23:52
+ * Last Modified: 2024-08-12 14:33:02
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -47,11 +47,12 @@ void commandTask(void *pvParameters)
         {
         case 0x00: // G00 quick move (without dropping the pen)
             WriterBotInstance->liftPen();
-            // delay(500);
+            delay(300);
             WriterBotInstance->moveToPosition(data[0], data[1]);
             break;
         case 0x01: // G01 move with pen down, linear
             WriterBotInstance->dropPen();
+            delay(300);
             WriterBotInstance->moveToPosition(data[0], data[1]);
             break;
         case 0x03: // M03 drop the pen
@@ -68,21 +69,43 @@ void commandTask(void *pvParameters)
             break;
         }
 
-        // calculate the delay between different commands,
-        // based on the distance between the current and last command
-        if (opcode == 0x00 || opcode == 0x01)
+        if (false)
         {
-            float distance = MathHelper.max(
-                MathHelper.abs(data[0] - lastData[0]),
-                MathHelper.abs(data[1] - lastData[1]));
-            dt = static_cast<uint32_t>(200 + distance * 75);
+            // calculate the delay between different commands,
+            // based on the distance between the current and last command
+            if (opcode == 0x00 || opcode == 0x01)
+            {
+                float distance = MathHelper.max(
+                    MathHelper.abs(data[0] - lastData[0]),
+                    MathHelper.abs(data[1] - lastData[1]));
+                dt = static_cast<uint32_t>(200 + distance * 75);
+            }
+            else
+            {
+                dt = 100;
+            }
+            // delay for dt milliseconds, then execute the next command
+            delay(dt);
         }
-        else
+
+        // wait for motors to reach target position
+        int cycleCount = 1;
+        for (;;)
         {
-            dt = 100;
+            if (WriterBotInstance->xSlider.motor.pid.hasReachedTarget() && WriterBotInstance->ySlider.motor.pid.hasReachedTarget())
+            {
+                break;
+            }
+            if (cycleCount > 700)
+            {
+                ESP_LOGE("WriterBot", "Can't keep up! Motors did not reach target position in 7000 ms, this command will be ignored.");
+                ESP_LOGE("WriterBot", "States: x.hasReachedTarget() = %d, y.hasReachedTarget() = %d",
+                         WriterBotInstance->xSlider.motor.pid.hasReachedTarget(), WriterBotInstance->ySlider.motor.pid.hasReachedTarget());
+                break;
+            }
+            delay(10);
+            cycleCount++;
         }
-        // delay for dt milliseconds, then execute the next command
-        delay(dt);
 
         // update executed command count
         WriterBotInstance->commandManager.executedCommandCount++;

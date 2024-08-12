@@ -4,7 +4,7 @@
  * Created Date: 2024-06-29 10:31:46
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-17 13:42:47
+ * Last Modified: 2024-08-12 14:20:59
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -44,6 +44,7 @@ PIDController::PIDController(float Kp, float Ki, float Kd)
     this->integralLimit = 100;
 
     this->deadzoneThreshold = 0;
+    this->hasReachedTargetFlag = false;
 }
 
 /**
@@ -57,13 +58,12 @@ PIDController::PIDController(float Kp, float Ki, float Kd)
  */
 float PIDController::update(float currentValueIn, float dt)
 {
-    this->tickCount++;
-
     this->currentValue = currentValueIn;
     this->currentError = this->targetValue - this->currentValue;
     // Check if the error is within the deadzone. Then return zero output.
     if (MathHelper.abs(this->currentError) < this->deadzoneThreshold)
     {
+        this->hasReachedTargetFlag = true;
         return 0;
     }
 
@@ -75,21 +75,14 @@ float PIDController::update(float currentValueIn, float dt)
     float D = this->Kd * (this->currentError - this->prevError) / dt;
     this->prevError = this->currentError;
 
-    // if ((this->tickCount % 2 == 0) && this->_id == 2)
-    // {
-    //     printf("[ID: %d] P: %f, I: %f, D: %f, target: %f, current: %f \n", this->_id, P, I, D, this->targetValue, this->currentValue);
-    //     if (P > 400)
-    //     {
-    //         printf("\033[31m[ID: %d] P is too large!!! \n\033[0m", this->_id);
-    //     }
-    // }
-
     return MathHelper.limit(P + I + D, this->outputLimit);
 }
 
 void PIDController::setTarget(float targetValueIn)
 {
     // Check if the target value has changed significantly.
+    // TODO: Make this threshold configurable, but what name should I use?
+    // The possible names are: "epsilon", "tolerance", "precision", "accuracy".
     if (MathHelper.abs(targetValueIn - targetValue) > 0.01)
     {
         this->reset();
@@ -123,6 +116,7 @@ void PIDController::reset()
     this->prevError = 0;
     this->currentError = 0;
     this->errorIntegral = 0;
+    this->hasReachedTargetFlag = false;
 }
 
 /**
@@ -131,4 +125,9 @@ void PIDController::reset()
 void PIDController::setDeadzoneThreshold(float deadzoneThresholdIn)
 {
     this->deadzoneThreshold = deadzoneThresholdIn;
+}
+
+bool PIDController::hasReachedTarget()
+{
+    return this->hasReachedTargetFlag;
 }

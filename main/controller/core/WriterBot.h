@@ -4,7 +4,7 @@
  * Created Date: 2024-07-07 17:42:44
  * Author: Guoyi
  * -----
- * Last Modified: 2024-08-01 11:15:39
+ * Last Modified: 2024-08-12 14:27:13
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -21,6 +21,7 @@
 #include "peripherals/device/LED/LED.h"
 #include "storage/NVSStorage.h"
 #include "peripherals/interface/ADC/ADC.h"
+#include "esp_log.h"
 
 class WriterBot
 {
