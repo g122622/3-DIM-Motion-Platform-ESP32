@@ -1,4 +1,9 @@
-# _Sample project_
+![](https://github.com/g122622/3-DIM-Motion-Platform-ESP32/blob/image-data/badge.svg)
+[![Lines Of Code](https://github.com/g122622/3-DIM-Motion-Platform-ESP32/actions/workflows/linesOfCode.yml/badge.svg)](https://github.com/g122622/3-DIM-Motion-Platform-ESP32/actions/workflows/linesOfCode.yml)
+
+使用C++编写的写字机器人固件，支持蓝牙、激光测距、磁编码步进电机、G代码解析，基于ESP32芯片。
+
+# 3-DIM-Motion-Platform-ESP32
 
 (See the README.md file in the upper level 'examples' directory for more information about examples.)
 
