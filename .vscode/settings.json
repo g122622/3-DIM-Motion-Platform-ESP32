@@ -23,7 +23,14 @@
         "complex": "cpp",
         "global.h": "c",
         "bleprph_init.h": "c",
-        "format": "cpp"
+        "format": "cpp",
+        "type_traits": "cpp",
+        "bitset": "cpp",
+        "optional": "cpp",
+        "memory": "cpp",
+        "future": "cpp",
+        "variant": "cpp",
+        "functional": "cpp"
     },
     "idf.flashType": "UART"
 }
