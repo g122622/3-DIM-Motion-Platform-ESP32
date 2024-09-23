@@ -4,7 +4,7 @@
  * Created Date: 2024-06-29 17:24:46
  * Author: Guoyi
  * -----
- * Last Modified: 2024-07-28 10:31:40
+ * Last Modified: 2024-09-23 17:48:07
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -27,11 +27,20 @@ typedef enum
     _GPIO_MODE_INPUT_OUTPUT = ((GPIO_MODE_DEF_INPUT) | (GPIO_MODE_DEF_OUTPUT)),                         /*!< GPIO mode : output and input mode                */
 } gpioModes;
 
+typedef enum
+{
+    GPIO_PULLUP_ONLY,     /*!< Pad pull up            */
+    GPIO_PULLDOWN_ONLY,   /*!< Pad pull down          */
+    GPIO_PULLUP_PULLDOWN, /*!< Pad pull up + pull down*/
+    GPIO_FLOATING,        /*!< Pad floating           */
+} gpioPullModes;
+
 class GPIO
 {
 public:
-    GPIO(int pinNumIn, gpioModes modeIn);
+    GPIO(int pinNumIn, gpioModes modeIn, gpioPullModes pullIn = GPIO_FLOATING);
     void setMode(int mode);
+    void setPull(int pull);
     void write(uint32_t value);
     int read();
     ~GPIO();

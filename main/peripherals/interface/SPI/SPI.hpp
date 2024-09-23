@@ -4,7 +4,7 @@
  * Created Date: 2024-09-22 23:27:44
  * Author: Guoyi
  * -----
- * Last Modified: 2024-09-23 13:32:14
+ * Last Modified: 2024-09-23 17:56:39
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
@@ -17,7 +17,6 @@
 #include "esp_system.h"
 #include "driver/spi_master.h"
 #include "driver/gpio.h"
-#include <functional>
 #include <string.h>
 
 class SPI
@@ -25,8 +24,8 @@ class SPI
 public:
     SPI(int SPI_Host_ID, int pin_mosi, int pin_miso, int pin_sclk, int pin_cs);
     ~SPI();
-    void transmit(uint8_t *data, int len);
-    void receive(uint8_t *data, int len);
+    void transmit(uint8_t *data, int lenInBytes);
+    void receive(uint8_t *data, int lenInBytes);
 
 private:
     int SPI_Host_ID;

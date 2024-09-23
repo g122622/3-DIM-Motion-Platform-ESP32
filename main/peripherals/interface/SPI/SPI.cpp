@@ -4,22 +4,15 @@
  * Created Date: 2024-09-23 13:31:51
  * Author: Guoyi
  * -----
- * Last Modified: 2024-09-23 13:39:57
+ * Last Modified: 2024-09-23 17:42:24
  * Modified By: Guoyi
  * -----
  * Copyright (c) 2024 Guoyi Inc.
- * 
+ *
  * ------------------------------------
  */
 
 #include "./SPI.hpp"
-
-void SPI::lcd_spi_pre_transfer_callback(spi_transaction_t *t)
-{
-    // TODO dc is not cs
-    int dc = (int)t->user;
-    gpio_set_level(static_cast<gpio_num_t>(this->pin_cs), dc);
-}
 
 // SPI1 can be used as GPSPI only on ESP32
 // SPI1_HOST = 0, ///< SPI1
@@ -41,13 +34,13 @@ SPI::SPI(int SPI_Host_ID, int pin_mosi, int pin_miso, int pin_sclk, int pin_cs)
         .quadwp_io_num = -1,
         .quadhd_io_num = -1,
         .max_transfer_sz = 16 * 320 * 2 + 8};
-    std::function<void(spi_transaction_t *)> cb = std::bind(&SPI::lcd_spi_pre_transfer_callback, this, std::placeholders::_1);
+    ;
     spi_device_interface_config_t devcfg = {
-        .mode = 0,                                          // SPI mode 0
-        .clock_speed_hz = 25 * 1000 * 1000,                 // Clock out at 50 MHz
-        .spics_io_num = pin_cs,                             // CS pin
-        .queue_size = 7,                                    // We want to be able to queue 7 transactions at a time
-        .pre_cb = (cb.target<void(spi_transaction_t *)>()), // Specify pre-transfer callback to handle D/C line
+        .mode = 0,                            // SPI mode 0
+        .clock_speed_hz = 25 * 1000 * 1000,   // Clock out at 50 MHz
+        .spics_io_num = pin_cs,               // CS pin
+        .queue_size = 7,                      // We want to be able to queue 7 transactions at a time
+        // .pre_cb = pre_transfer_callback_func, // Specify pre-transfer callback to handle D/C line
     };
 
     esp_err_t ret;
